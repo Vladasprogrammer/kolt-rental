@@ -1,3 +1,12 @@
+:root {
+  --dark-black: #020202;
+  --deep-green: #0d2818;
+  --forest-green: #04471c;
+  --vibran-green: #058c42;
+  --lime-green: #16db65;
+}
+
+
 .App {
   text-align: center;
 }
@@ -36,3 +45,76 @@
     transform: rotate(360deg);
   }
 }
+
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
+  margin: 25px;
+}
+
+
+button {
+  display: flex;
+  border-radius: 8px;
+  padding: 20px 10px;
+  margin: 20px;
+  font-size: 19px;
+}
+
+.scooter-card {
+  border-radius: 7px;
+  padding: 10px;
+  margin: 60px;
+  width: 1280px;
+  max-width: 650px;
+  min-width: 250px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--forest-green);
+  color: white;
+}
+
+
+
+
+body {
+  background-color: var(--dark-black);
+  color: var(--lime-green);
+  font-family: Arial, sans-serif;
+  letter-spacing: 2px;
+}
+
+.container {
+  padding: 20px;
+  background-color: var(--deep-green);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  color: var(--lime-green);
+  text-align: center;
+}
+
+button {
+  background-color: var(--vibrant-green);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: var(--lime-green);
+}
+

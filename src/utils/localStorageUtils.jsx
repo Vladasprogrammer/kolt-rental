@@ -1,12 +1,8 @@
-const STORAGE_KEY = "scooters";
+export const getScooters = _ => {
+  return JSON.parse(localStorage.getItem('scooters')) || [];
+};
 
-// Gauti paspirtukus iš localStorage
-export function loadScooters() {
-  const data = localStorage.getItem(STORAGE_KEY);
-  return data ? JSON.parse(data) : [];
-}
-
-// Išsaugoti paspirtukus į localStorage
-export function saveScooters(scooters) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(scooters));
-}
+export const saveScooters = scooters => {
+  localStorage.setItem('scooters', JSON.stringify(scooters));
+  
+};
