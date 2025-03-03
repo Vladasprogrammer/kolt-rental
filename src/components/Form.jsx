@@ -48,11 +48,16 @@ export default function Form({ onAdd }) {
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend>Naujas paspirtukas</legend>
-          <label>Data:</label>
-          <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-          <label>Kilometrai:</label>
-          <input type="number" value={kilometers} onChange={(e) => setKilometers(e.target.value)} />
-          <button type="submit">Pridėti paspirtuką</button>
+          <div className="form">
+            <label>ID: {idRef.current}</label>
+            <label>Registracijos kodas: {Math.random().toString(36).substr(2, 8).toUpperCase()}</label>
+            <label>Būsena: Laisva</label>
+            <label>Data:</label>
+            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+            <label>Kilometrai:</label>
+            <input type="number" value={kilometers} onChange={(e) => setKilometers(e.target.value)} />
+            <button type="submit">Pridėti paspirtuką</button>
+          </div>
         </fieldset>
       </form>
     </>
