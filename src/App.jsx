@@ -1,72 +1,76 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import { getScooters, saveScooters } from './utils/localStorageUtils';
-
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css";
+import Form from './components/Form';
+import List from './components/List';
+import EditModal from './components/EditModal';
+import { Scooter } from './models/Scooter';
+import './form.css';
 
 export default function App() {
-
   const [scooters, setScooters] = useState([]);
-
+  const [modalData, setModalData] = useState(null);
 
   useEffect(_ => {
-    const storedScooters = getScooters();
-    setScooters(storedScooters);
+
+    const scooterObjects = getScooters().map(scooter =>
+      new Scooter(scooter.id, scooter.lastUseTime, scooter.totalRideKilometers)
+    );
+    setScooters(scooterObjects);
   }, []);
 
-  const handleAddScooter = _ => {
+  const addScooter = newScooterData => {
 
-    const newScooter = {
-      id: Date.now(),
-      regCode: 'ABC-123',
-      isBusy: false,
-      lastUseTime: 'Nėra',
-      totalKm: 0
-    };
+    const newScooter = new Scooter(
+      newScooterData.date,
+      newScooterData.kilometers
+    );
 
     const updatedScooters = [...scooters, newScooter];
-
     setScooters(updatedScooters);
     saveScooters(updatedScooters);
   };
 
-  const handleDeleteScooter = id => {
+  const editScooter = (id, updatedData) => {
+    const updatedScooters = scooters.map(scooter =>
+      scooter.id === id ? { ...scooter, ...updatedData } : scooter
+    );
+    setScooters(updatedScooters);
+    saveScooters(updatedScooters);
+  };
+
+  const deleteScooter = id => {
     const updatedScooters = scooters.filter(scooter => scooter.id !== id);
     setScooters(updatedScooters);
     saveScooters(updatedScooters);
   };
 
-  const handleEditScooter = (id, updatedData) => {
-    const updatedScooters = scooters.map(scooter => scooter.id === id ? { ...scooter, ...updatedData } : scooter );
-    setScooters(updatedScooters);
-    saveScooters(updatedScooters);
-  }
+  const handleEditClick = scooter => {
+    setModalData({ scooter, isOpen: true });
+  };
 
+  const handleCloseModal = _ => {
+    setModalData(null);
+  };
 
   return (
     <div className='container'>
-
       <h1>Paspirtukų nuoma</h1>
-      <button onClick={handleAddScooter}>Pridėti paspirtuką</button>
-
-      <div>
-        {scooters.length === 0 ? (
-          <p>Nėra paspirtukų</p>
-        ) : (
-          scooters.map(scooter => (
-            <div key={scooter.id} className="scooter-card">
-              <p>Registracijos kodas: {scooter.regCode}</p>
-              <p>Būsena: {scooter.isBusy ? 'Užimtas' : 'Laisvas'}</p>
-              <p>Paskutinio naudojimo data: {scooter.lastUseTime}</p>
-              <p>Nuvažiuota km: {scooter.totalKm}</p>
-              <div>
-                <button onClick={_ => handleEditScooter(scooter.id, { isBusy: !scooter.isBusy })}>Redaguoti</button>
-                <button onClick={_ => handleDeleteScooter(scooter.id)}>Trinti</button>
-              </div>
-            </div>
-          ))
-        )}
-      </div>
-
+      <Form onAdd={addScooter} />
+      <List
+        scooters={scooters}
+        onEdit={handleEditClick}
+        onDelete={deleteScooter} />
+      <ToastContainer position="top-right" autoClose={3000} />
+      {modalData && modalData.isOpen && (
+        <EditModal
+          scooter={modalData.scooter}
+          onSave={editScooter}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 }
