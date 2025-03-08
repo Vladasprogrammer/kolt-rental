@@ -1,82 +1,40 @@
-/* :root {
-  --dark-black: #020202;
-  --deep-green: #0d2818;
-  --forest-green: #04471c;
-  --vibrant-green: #058c42;
-  --lime-green: #16db65;
-}
-
-
 fieldset {
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  background-color: var(--dark-black);
-}
-
-
-
-.form {
-  display: inherit;
-  flex-flow: column wrap;
-  margin: 20px;
-  padding: 15px;
-
-} */
-
-
-fieldset {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
+  flex-direction: column;
   background-color: var(--forest-green);
-  border: 2px solid var(--vibrant-green); /* Added border */
-  color: white; /* Text color */
-  padding: 20px; /* Added padding */
-  margin: 20px; /* Added margin */
+  border: 2px solid var(--vibrant-green); 
+  color: white; 
+  padding: 20px; 
+  margin: 20px; 
 }
 
 .form {
   display: flex;
   flex-flow: column wrap;
-  margin: 10px;
-  padding: 15px;
-  gap: 10px; /* Added gap between form elements */
+  width: 100%;
+  gap: 10px; 
 }
 
 label {
-  color: white; /* Label text color */
-  font-size: 16px; /* Label font size */
+  color: white; 
+  font-size: 16px; 
 }
 
 input {
   padding: 8px;
+  margin: 5px 0;
   border-radius: 5px;
   border: 1px solid var(--vibrant-green);
   background-color: var(--forest-green);
   color: var(--lime-green);
   font-size: 16px;
+  width: 100%;
 }
 
 input:focus {
   outline: none;
   border-color: var(--lime-green);
-}
-
-button[type="submit"] {
-  background-color: var(--vibrant-green);
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin-top: 15px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
-  transition: background 0.3s;
-}
-
-button[type="submit"]:hover {
-  background-color: var(--lime-green);
 }
