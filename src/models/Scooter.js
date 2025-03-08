@@ -1,14 +1,22 @@
 export class Scooter {
-  constructor(id, date, kilometers) {
+  constructor(id, code, isBusy, date, kilometers) {
     this.id = id;
-    this.registrationCode = Math.random().toString(36).substr(2, 8).toUpperCase();
-    this.isBusy = false;
+    this.registrationCode = code;
+    this.isBusy = isBusy;
     this.lastUseTime = date;
-    this.totalRideKilometers = parseFloat(kilometers);
+    this.totalRideKilometers = parseFloat(kilometers) || '';
   }
 
   updateData(newDate, newKilometers) {
     this.lastUseTime = newDate;
     this.totalRideKilometers = parseFloat(newKilometers);
+  }
+  
+  markAsBusy() {
+    this.isBusy = true;
+  }
+
+  markAsFree() {
+    this.isBusy = false;
   }
 }
