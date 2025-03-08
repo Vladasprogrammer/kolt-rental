@@ -1,65 +1,80 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getLastId, saveLastId } from "../utils/localStorageUtils";
+import { getLastId, getScooters, saveLastId, saveScooters } from "../utils/localStorageUtils";
+import { Scooter } from "../models/Scooter";
+import generateRegCode from "../functions/GenerateCode";
+import { vDate } from "../functions/vDate";
+import { vKilometers } from "../functions/vKilometers";
 
 export default function Form({ onAdd }) {
-  const [date, setDate] = useState('');
-  const [kilometers, setKilometers] = useState('');
-  const idRef = useRef(getLastId());
 
-  useEffect(_ => {
-    idRef.current = getLastId();
-  }, []);
+  const [newScooter, setNewScooter] = useState(_ =>
+    new Scooter(getLastId(), generateRegCode(), false, '', '')
+  );
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    if (!date || !kilometers) {
-      toast.error('Užpildyk laukelius, prašau!');
+    const date = vDate(newScooter.lastUseTime);
+    const kilometers = vKilometers(Number(newScooter.totalRideKilometers));
+    
+    if (!date.valid) {
+      toast.error(date.message);
+      return;
+    }
+    if (!kilometers.valid) {
+      toast.error(kilometers.message);
       return;
     }
 
-    if (kilometers < 0) {
-      toast.error('Kilometrai negali būti neigiami! (Nice try)');
-      return;
-    }
+    const updatedScooters = [...getScooters(), newScooter];
 
-    const newScooter = {
-      id: idRef.current,
-      registrationCode: Math.random().toString(36).substr(2, 8).toUpperCase(),
-      isBusy: 0,
-      lastUseTime: date,
-      totalRideKilometers: parseFloat(kilometers),
-    };
+    saveScooters(updatedScooters);
+    onAdd(updatedScooters);
 
-    onAdd(newScooter);
+    const updatedId = newScooter.id + 1;
+    saveLastId(updatedId);
 
-    idRef.current += 1;
-    saveLastId(idRef.current);
+    setNewScooter(new Scooter(updatedId, generateRegCode(), false, '', ''));
 
     toast.success('Valio, paspirtukas pridėtas!');
-    setDate('');
-    setKilometers('');
+
   };
 
+  
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <fieldset>
-          <legend>Naujas paspirtukas</legend>
-          <div className="form">
-            <label>ID: {idRef.current}</label>
-            <label>Registracijos kodas: {Math.random().toString(36).substr(2, 8).toUpperCase()}</label>
-            <label>Būsena: Laisva</label>
-            <label>Data:</label>
-            <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
-            <label>Kilometrai:</label>
-            <input type="number" value={kilometers} onChange={(e) => setKilometers(e.target.value)} />
-            <button type="submit">Pridėti paspirtuką</button>
-          </div>
-        </fieldset>
-      </form>
+      <fieldset>
+        <legend>Naujas paspirtukas</legend>
+        <div className="form">
+          <label>ID: {newScooter.id}</label>
+          <label>Registracijos kodas: {newScooter.registrationCode}</label>
+          <label>Būsena: {newScooter.isBusy ? 'Užimtas' : 'Laisvas'}</label>
+          <label>Data: <input
+            type="date"
+            value={newScooter.lastUseTime}
+            onChange={e => setNewScooter(prev => new Scooter(
+              prev.id,
+              prev.registrationCode,
+              prev.isBusy,
+              e.target.value,
+              prev.totalRideKilometers))} />
+          </label>
+          <label>Kilometrai:<input
+            type="number"
+            placeholder="0"
+            value={newScooter.totalRideKilometers}
+            onChange={e => setNewScooter(prev => new Scooter(
+              prev.id,
+              prev.registrationCode,
+              prev.isBusy,
+              prev.lastUseTime,
+              parseFloat(e.target.value)))} />
+          </label>
+        </div>
+        <button onClick={handleSubmit}>Pridėti paspirtuką</button>
+      </fieldset>
     </>
   );
 }
