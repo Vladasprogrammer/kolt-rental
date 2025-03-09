@@ -1,0 +1,45 @@
+.btn {
+  display: inherit;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.scooter-card {
+  flex: 1;
+  border-radius: 7px;
+  padding: 10px;
+  margin: 15px;
+  max-width: 450px;
+  min-width: 307px;
+  display: flex;
+  flex-flow: column wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  background-color: var(--content-bg);
+  color: var(--text-color);
+  box-shadow: 0 10px 19px 2px rgba(0, 0, 0, 0.3);
+}
+
+.id {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-color);
+  background: linear-gradient(to bottom, var(--primary-color), var(--dark-bg) );
+  padding: 5px 15px;
+  border-radius: 50px;
+  display: inline-block;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.dots {
+  flex-grow: 1;
+  border-bottom: 2px dotted var(--secondary-color);
+  margin: 0 5px;
+}

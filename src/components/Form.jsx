@@ -6,12 +6,33 @@ import { Scooter } from "../models/Scooter";
 import generateRegCode from "../functions/GenerateCode";
 import { vDate } from "../functions/vDate";
 import { vKilometers } from "../functions/vKilometers";
+import './styles/Form.css';
 
 export default function Form({ onAdd }) {
 
   const [newScooter, setNewScooter] = useState(_ =>
     new Scooter(getLastId(), generateRegCode(), false, '', '')
   );
+
+  const doChange = e => {
+    const { name, value, type } = e.target;
+    
+    setNewScooter(prev => {
+      let updatedValue = type === "number" ? parseFloat(value) || 0 : value;
+
+      if (name === "totalRideKilometers") {
+        updatedValue = parseFloat(updatedValue).toFixed(2);
+      }
+
+      return new Scooter(
+        prev.id,
+        prev.registrationCode,
+        prev.isBusy,
+        name === "lastUseTime" ? updatedValue : prev.lastUseTime,
+        name === "totalRideKilometers" ? updatedValue : prev.totalRideKilometers
+      );
+    });
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -51,26 +72,18 @@ export default function Form({ onAdd }) {
           <label>ID: {newScooter.id}</label>
           <label>Registracijos kodas: {newScooter.registrationCode}</label>
           <label>Būsena: {newScooter.isBusy ? 'Užimtas' : 'Laisvas'}</label>
-          <label>Data: <input
+          <label>Data:<input
             type="date"
+            name="lastUseTime"
             value={newScooter.lastUseTime}
-            onChange={e => setNewScooter(prev => new Scooter(
-              prev.id,
-              prev.registrationCode,
-              prev.isBusy,
-              e.target.value,
-              prev.totalRideKilometers))} />
+            onChange={doChange} />
           </label>
           <label>Kilometrai:<input
             type="number"
+            name="totalRideKilometers"
             placeholder="0"
             value={newScooter.totalRideKilometers}
-            onChange={e => setNewScooter(prev => new Scooter(
-              prev.id,
-              prev.registrationCode,
-              prev.isBusy,
-              prev.lastUseTime,
-              parseFloat(e.target.value)))} />
+            onChange={doChange} />
           </label>
         </div>
         <button onClick={handleSubmit}>Pridėti paspirtuką</button>
