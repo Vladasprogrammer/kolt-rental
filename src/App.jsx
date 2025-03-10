@@ -36,7 +36,7 @@ export default function App() {
 
   const freeScooters = scooters.filter(scooter => !scooter.isBusy);
 
-  const sortedScooters = sortScooters(freeScooters, sortOrder.sortBy, sortOrder.direction);
+  const sortedScooters = sortScooters(scooters, sortOrder.sortBy, sortOrder.direction);
 
   const handleSort = (property) => {
     setSortOrder(prevState => {
@@ -44,10 +44,6 @@ export default function App() {
       return { sortBy: property, direction };
     });
   };
-
-
-
-
 
   useEffect(_ => {
     saveScooters(scooters);

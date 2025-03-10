@@ -6,8 +6,8 @@ export default function Stats({ freeScooters }) {
 
   return (
     <div className="stats">
-      <p><strong>Total Scooters:</strong> {totalScooters}</p>
-      <p><strong>Total Kilometers:</strong> {(totalKilometers).toFixed(2)} km</p>
+      <p><strong>Total Scooters:</strong><span className='dots'></span> {totalScooters}</p>
+      <p><strong>Total Kilometers:</strong><span className='dots'></span> {totalKilometers.toFixed(2)} km</p>
     </div>
   );
 }

@@ -18,7 +18,7 @@ export default function Form({ onAdd }) {
     const { name, value, type } = e.target;
     
     setNewScooter(prev => {
-      let updatedValue = type === "number" ? parseFloat(value) || 0 : value;
+      let updatedValue = type === "number" ? (value) || 0 : value;
 
       if (name === "totalRideKilometers") {
         updatedValue = parseFloat(updatedValue).toFixed(2);
@@ -49,7 +49,15 @@ export default function Form({ onAdd }) {
       return;
     }
 
-    const updatedScooters = [...getScooters(), newScooter];
+    const formattedScooter = new Scooter(
+      newScooter.id,
+      newScooter.registrationCode,
+      newScooter.isBusy,
+      newScooter.lastUseTime,
+      parseFloat(newScooter.totalRideKilometers || 0).toFixed(2)
+    );
+    
+    const updatedScooters = [...getScooters(), formattedScooter];
 
     saveScooters(updatedScooters);
     onAdd(updatedScooters);

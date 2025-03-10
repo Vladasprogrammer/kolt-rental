@@ -1,5 +1,5 @@
 import './styles/List.css';
-import img from './images/transport.png';
+// import img from './images/transport.png';
 import img2 from './images/Beaver.png';
 
 export default function List({ scooters, onEdit, onDelete }) {

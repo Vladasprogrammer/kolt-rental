@@ -22,7 +22,7 @@ export default function EditModal({ scooter, onSave, onClose }) {
     onSave({
       ...scooter,
       lastUseTime: newData.newUseTime || scooter.lastUseTime,
-      totalRideKilometers: (scooter.totalRideKilometers) + (newData.newKilometers || 0),
+      totalRideKilometers: parseFloat((scooter.totalRideKilometers + (parseFloat(newData.newKilometers) || 0)).toFixed(2)),
       isBusy: newData.isBusy
     });
   };
